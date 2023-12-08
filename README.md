@@ -41,7 +41,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/aba202e6-051f-4d99-afaa-394a0a3822d6)
 
 
-# DROPPING NaN VALUES
+# Dropping NaN values
 
     df.dropna(inplace=True)
 
@@ -56,7 +56,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 (403182, 8)
 
 
-# BREAKDOWN OF ORDERS BY COUNTRY IN PERCENTAGES
+# Breakdown of orders by country in percentages
 
     df['Country'].value_counts(normalize=True)
 
@@ -72,7 +72,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/caf6bb65-4cff-42fe-85e4-7810ff3f93c0)
 
 
-# FINDING THE MIN AND MAX VALUES 
+# Finding the MIN and MAX values 
 
 * QUANTITY
 
@@ -102,33 +102,33 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/13b869f2-8d87-498a-a8ff-e4ae603f0668)
 
 
-# CREATING A NEW COLUMN "TOTAL PRICE"
+# Creating a new column "Total Price"
 
     df["Total Price"] = df["Quantity"]*df["UnitPrice"]
 
 
-# EXCLUDING THE INVOICES WITH "C" IN INVOICE NO, WHICH ARE THE INVOICES WITH NEGATIVE VALUES
+# Excluding the invoices with "C" in "InvoiceNo", which are the invoices with negative values
 
     df = df[~df["InvoiceNo"].str.contains("C")]
 
 
-# CHECKING FOR ZERO OR NEGATIVE VALUES IN THE COLUMNS "Quantity" AND "UnitPrice"
+# Checking for zero or negative values in the columns "Quantity" and "UnitPrice"
 
     df[df["Quantity"] <=  0]
 
     df[df["UnitPrice"] <=  0]
 
 
-# DELETING ORDERS WHERE "UnitPrice" IS 0
+# Deleting orders where "UnitPrice" is 0
 
     df = df[df["UnitPrice"] >  0]
 
 
-# CONVERTING COLUMN "InvoiceDate" FROM STRING TO DATETIME
+# Converting the column "InvoiceDate" from STRING to DATETIME
 
     df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 
-# CONVERTING COLUMN "CustomerID" FROM FLOAT TO INTEGER
+# Converting the column "CustomerID" from FLOAT to INT
 
     df['CustomerID'] = df['CustomerID'].astype(int)
 
@@ -148,7 +148,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 5147
 
 
-# SHOWING DUPLICATED ROWS
+# Showing duplicated rows
 
     duplicated_rows = df[df.duplicated(keep=False)]
     duplicated_rows.sort_values(by=["InvoiceNo","Description","Quantity"])
@@ -156,7 +156,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/c06c4f86-a957-45e1-a4e5-30f764aaa0b9)
 
 
-# DROPPING DUPLICATES
+# Dropping duplicates
 
     df.drop_duplicates(inplace = True)
 
@@ -166,7 +166,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 0
 
 
-# DESCRIBING THE NUMERICAL VALUES BY COUNTRY
+# Describing the numerical values by Country
 
     columns_to_describe = ["Quantity", "UnitPrice", "Total Price"]
 
@@ -198,7 +198,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/7e47a49b-a3b0-4f67-86aa-a93c1819d92f)
 
 
-# LIST OF PRODUCTS WITH NUMBER OF ORDERS
+# List of products with number of orders (DESC)
 
     df['Description'].value_counts()
 
@@ -223,6 +223,8 @@ Data Analysis and Data Visualization of Sales and Customers Data.
     unique_products_prices = df[['Description', 'UnitPrice']].drop_duplicates()
 
     unique_products_prices.sort_values(by="UnitPrice", ascending = False).head(10)
+
+
 
 # TOP 10 countries by Total Sales
 
