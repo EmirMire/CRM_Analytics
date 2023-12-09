@@ -16,6 +16,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
     from sklearn.metrics import mean_squared_error
 
 # READING THE CSV FILE
+
     df = pd.read_csv('CRM_Data_UTF-8.csv')
 
 
@@ -56,7 +57,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 (403182, 8)
 
 
-# Breakdown of orders by country in percentages
+# Breakdown of orders by country in %
 
     df['Country'].value_counts(normalize=True)
 
@@ -178,7 +179,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/0f6622da-ca15-4c53-9ee0-5dd051dc6cab)
 
 
-# NUMBER OF ORDERS PER COUNTRY
+# Number of Orders per Country
 
     countries = df["Country"].value_counts()
 
@@ -224,168 +225,228 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 
     unique_products_prices.sort_values(by="UnitPrice", ascending = False).head(10)
 
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/849dcfdc-0745-4f08-be29-6faacb9b2d68)
 
 
-# TOP 10 countries by Total Sales
+# TOP 10 COUNTRIES BY TOTAL SALES
 
-Sales = df.groupby("Country", as_index = False)["Total Price"].sum()
+    Sales = df.groupby("Country", as_index = False)["Total Price"].sum()
 
-Sales_top10 = Sales.sort_values(by="Total Price", ascending=False).head(10)
+    Sales_top10 = Sales.sort_values(by="Total Price", ascending=False).head(10)
 
-Sales_top10
+    Sales_top10
+    
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/cdca04c2-9283-4d9e-b304-b0205e8cc237)
 
-# The distribution of sales in TOP 10 countries.
 
-plt.figure(figsize=(18, 6))
-sns.barplot(data= Sales_top10, x= 'Country', y= 'Total Price',palette= 'muted')
-plt.title('The distribution of sales in TOP 10 countries', fontsize= 16)
-plt.xlabel('Country', fontsize= 14)
-plt.ylabel('Total Sales', fontsize = 14)
-plt.xticks(fontsize= 12)
-plt.show()
+# The distribution of sales in TOP 10 countries 
+
+    plt.figure(figsize=(18, 6))
+    sns.barplot(data= Sales_top10, x= 'Country', y= 'Total Price',palette= 'muted')
+    plt.title('The distribution of sales in TOP 10 countries', fontsize= 16)
+    plt.xlabel('Country', fontsize= 14)
+    plt.ylabel('Total Sales', fontsize = 14)
+    plt.xticks(fontsize= 12)
+    plt.show()
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/bdf0b68a-1dac-42d1-9bde-578091afc1d1)
+
+
 # The distribution of sales in the top country (UK) per month and year.
 
-df['Month'] = df['InvoiceDate'].dt.month
+    df['Month'] = df['InvoiceDate'].dt.month
 
-df['Year'] = df['InvoiceDate'].dt.year
+    df['Year'] = df['InvoiceDate'].dt.year
 
-UK = df[df["Country"] == "United Kingdom"]
+    UK = df[df["Country"] == "United Kingdom"]
 
-UK_Sales = UK.groupby(["Year","Month"], as_index = False)["Total Price"].sum()
+    UK_Sales = UK.groupby(["Year","Month"], as_index = False)["Total Price"].sum()
 
-plt.figure(figsize=(18, 6))
-sns.barplot(data= UK_Sales, x= 'Month', y= 'Total Price', hue='Year',palette= 'bright')
-plt.title('The distribution of sales in the UK per month and year', fontsize= 16)
-plt.xlabel('Invoice Month', fontsize= 14)
-plt.ylabel('Total Sales', fontsize = 14)
-plt.xticks(fontsize= 12)
-plt.show()
+    plt.figure(figsize=(18, 6))
+    sns.barplot(data= UK_Sales, x= 'Month', y= 'Total Price', hue='Year',palette= 'bright')
+    plt.title('The distribution of sales in the UK per month and year', fontsize= 16)
+    plt.xlabel('Invoice Month', fontsize= 14)
+    plt.ylabel('Total Sales', fontsize = 14)
+    plt.xticks(fontsize= 12)
+    plt.show()
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/14df1886-dd3c-447f-b76e-7d861af7c415)
+
 
 # The distribution of sales in other TOP 10 countries per year/month.
 
-TOP10_Other = Sales_top10[~Sales_top10["Country"].str.contains("United Kingdom")]
+    TOP10_Other = Sales_top10[~Sales_top10["Country"].str.contains("United Kingdom")]
 
-Sales_top10_other = df[df["Country"].isin(TOP10_Other["Country"])].groupby(["Country", "Year", "Month"], as_index = False)["Total Price"].sum()
+    Sales_top10_other = df[df["Country"].isin(TOP10_Other["Country"])].groupby(["Country", "Year", "Month"], as_index = False)["Total Price"].sum()
 
-Sales_top10_other
+    Sales_top10_other
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/3fd7831d-5091-4750-903f-152a8598c3ba)
+
 
 # The distribution of sales in other TOP 10 countries per year.
 
+    plt.figure(figsize=(18, 6))
+    sns.barplot(data= Sales_top10_other, x= 'Country', y= 'Total Price',hue ="Year",palette= 'Paired')
+    plt.title('The distribution of sales in other TOP 10 countries per year', fontsize= 16)
+    plt.xlabel('Country', fontsize= 18)
+    plt.ylabel('Total Sales', fontsize = 18)
+    plt.xticks(fontsize= 14)
+    plt.show()
 
-plt.figure(figsize=(18, 6))
-sns.barplot(data= Sales_top10_other, x= 'Country', y= 'Total Price',hue ="Year",palette= 'Paired')
-plt.title('The distribution of sales in other TOP 10 countries per year', fontsize= 16)
-plt.xlabel('Country', fontsize= 18)
-plt.ylabel('Total Sales', fontsize = 18)
-plt.xticks(fontsize= 14)
-plt.show()
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/65902181-cd6e-4150-a2bd-fd2ff82310f3)
+
+
 # The distribution of sales in other TOP 10 countries per month.
 
+    plt.figure(figsize=(18, 6))
+    sns.barplot(data= Sales_top10_other, x= 'Country', y= 'Total Price',hue ="Month",palette= 'viridis')
+    plt.title('The distribution of sales in other TOP 10 countries per year', fontsize= 16)
+    plt.xlabel('Country', fontsize= 18)
+    plt.ylabel('Total Sales', fontsize = 18)
+    plt.xticks(fontsize= 14)
+    plt.show()
 
-plt.figure(figsize=(18, 6))
-sns.barplot(data= Sales_top10_other, x= 'Country', y= 'Total Price',hue ="Month",palette= 'viridis')
-plt.title('The distribution of sales in other TOP 10 countries per year', fontsize= 16)
-plt.xlabel('Country', fontsize= 18)
-plt.ylabel('Total Sales', fontsize = 18)
-plt.xticks(fontsize= 14)
-plt.show()
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/c6b41bed-7765-4b0a-a9fe-0593298f961c)
 
-Sales_per_month = df.groupby("Month", as_index=False)["Total Price"].sum()
 
-plt.figure(figsize=(12, 6))
+# Total monthly sales Trendline
 
-sns.lineplot(data=Sales_per_month, x="Month", y="Total Price", marker='o', color='b', linewidth=2)
+    Sales_per_month = df.groupby("Month", as_index=False)["Total Price"].sum()
 
-plt.title('Total Sales Monthly', fontsize=18, weight='bold')
-plt.xlabel('Month', fontsize=14, weight='bold')
-plt.ylabel('Total Sales', fontsize=14, weight='bold')
-plt.xticks(fontsize=12)
-plt.yticks(fontsize=12)
-plt.grid(True, linestyle='--', alpha=0.7)
+    plt.figure(figsize=(12, 6))
 
-for x, y in zip(Sales_per_month["Month"], Sales_per_month["Total Price"]):
-    plt.text(x, y, f'{y:.2f}', ha='center', va='bottom', fontsize=10, color='black')
+    sns.lineplot(data=Sales_per_month, x="Month", y="Total Price", marker='o', color='b', linewidth=2)
 
-plt.show()
+    plt.title('Total Sales Monthly', fontsize=18, weight='bold')
+    plt.xlabel('Month', fontsize=14, weight='bold')
+    plt.ylabel('Total Sales', fontsize=14, weight='bold')
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.grid(True, linestyle='--', alpha=0.7)
+
+    for x, y in zip(Sales_per_month["Month"], Sales_per_month["Total Price"]):
+        plt.text(x, y, f'{y:.2f}', ha='center', va='bottom', fontsize=10, color='black')
+
+    plt.show()
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/bb96c6a4-dd43-4547-85c8-aecebc94e797)
+
 
 # DISTRIBUTION OF TOTAL ORDER PRICES
 
-sns.histplot(data=df, x='Total Price', bins=np.arange(0,500,10))
+    sns.histplot(data=df, x='Total Price', bins=np.arange(0,500,10))
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/3c19121d-3f59-45f7-bddd-32260f5f056d)
+
+
 # OUTLIERS DETECTION
 
+    fig = plt.figure(figsize= (16, 8))
+    plt.title('The distribution of the values:', fontsize= 16)
 
-fig = plt.figure(figsize= (16, 8))
-plt.title('The distribution of the values:', fontsize= 16)
+    axs = fig.subplots(nrows=2, ncols= 1)
 
-axs = fig.subplots(nrows=2, ncols= 1)
+    sns.boxplot(data = df, x= 'Quantity', ax = axs[0])
+    sns.boxplot(data = df, x= 'UnitPrice',ax = axs[1])
 
-sns.boxplot(data = df, x= 'Quantity', ax = axs[0])
-sns.boxplot(data = df, x= 'UnitPrice',ax = axs[1])
+    plt.show()
 
-plt.show()
-df['Quantity'].sort_values()
-df.loc[61619]
-df['UnitPrice'].sort_values()
-df.loc[173382]
-# DELETE THE EXTREME OUTLIERS BY THEIR INDEX
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/5a5ba56a-251f-4da9-a4ad-a8d111493de2)
 
-df = df.drop(index = [61619, 173382])
+
+    df['Quantity'].sort_values()
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/13934d4c-553c-4a6a-8bd0-c5998206a121)
+
+
+    df.loc[61619]
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/cfb69d72-06e7-4efe-aa2b-c8ecd683e740)
+
+
+    df['UnitPrice'].sort_values()
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/14a3fad2-f82d-408a-8576-45fc017eb941)
+
+
+    df.loc[173382]
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/33d8d121-0791-4f49-aea5-41625dcb3ea9)
+
+
+# Delete the extreme outliers by their index
+
+    df = df.drop(index = [61619, 173382])
+
+
 # TOP 10 CUSTOMER BY NUMBER OF ORDERS
 
-TOP10_CUSTOMERS = df['CustomerID'].value_counts().head(10)
+    TOP10_CUSTOMERS = df['CustomerID'].value_counts().head(10)
 
-TOP10_CUSTOMERS
+    TOP10_CUSTOMERS
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/75ced686-0e19-40bc-a381-83143083a98f)
 
 
 # Create a DataFrame with sorted values
-TOP10_CUSTOMERS_df = pd.DataFrame({'CustomerID': TOP10_CUSTOMERS.index, 'Count': TOP10_CUSTOMERS.values})
-TOP10_CUSTOMERS_df = TOP10_CUSTOMERS_df.sort_values(by='Count', ascending=False)
 
-plt.figure(figsize=(12, 6))
-sns.barplot(x='CustomerID', y='Count', data=TOP10_CUSTOMERS_df, palette='viridis',
-            order=TOP10_CUSTOMERS_df['CustomerID']) 
+    TOP10_CUSTOMERS_df = pd.DataFrame({'CustomerID': TOP10_CUSTOMERS.index, 'Count': TOP10_CUSTOMERS.values})
+    TOP10_CUSTOMERS_df = TOP10_CUSTOMERS_df.sort_values(by='Count', ascending=False)
+    
+    plt.figure(figsize=(12, 6))
+    sns.barplot(x='CustomerID', y='Count', data=TOP10_CUSTOMERS_df, palette='viridis',
+                order=TOP10_CUSTOMERS_df['CustomerID']) 
 
-plt.title('Top 10 Customers by Number of Orders', fontsize=18, weight='bold')
-plt.xlabel('Customer ID', fontsize=14, weight='bold')
-plt.ylabel('Number of Orders', fontsize=14, weight='bold')
-plt.xticks(rotation=45, ha='right', fontsize=12)
-plt.yticks(fontsize=12)
-plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.title('Top 10 Customers by Number of Orders', fontsize=18, weight='bold')
+    plt.xlabel('Customer ID', fontsize=14, weight='bold')
+    plt.ylabel('Number of Orders', fontsize=14, weight='bold')
+    plt.xticks(rotation=45, ha='right', fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
 
-# Adding data labels
-for x, y in zip(range(len(TOP10_CUSTOMERS_df)), TOP10_CUSTOMERS_df['Count']):
-    plt.text(x, y, f'{y}', ha='center', va='bottom', fontsize=10, color='black')
+* Adding data labels
 
-plt.show()
+        for x, y in zip(range(len(TOP10_CUSTOMERS_df)), TOP10_CUSTOMERS_df['Count']):
+            plt.text(x, y, f'{y}', ha='center', va='bottom', fontsize=10, color='black')
 
-# TOP 10 CUSTOMER BY TOTAL SPENDINGS
+        plt.show()
 
-TOP10_SPENDERS = df.groupby("CustomerID", as_index = False)["Total Price"].sum()
-
-TOP10_SPENDERS = TOP10_SPENDERS.sort_values(by = "Total Price", ascending = False).head(10)
-
-TOP10_SPENDERS 
+  ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/c34718ab-7c5f-4ce5-8e38-60b455f48bb8)
 
 
 # TOP 10 CUSTOMER BY TOTAL SPENDINGS
 
+    TOP10_SPENDERS = df.groupby("CustomerID", as_index = False)["Total Price"].sum()
 
-plt.figure(figsize=(12, 8))
-sns.barplot(x="CustomerID", y="Total Price", data=TOP10_SPENDERS, palette='Blues', 
-            order=TOP10_SPENDERS['CustomerID'])
+    TOP10_SPENDERS = TOP10_SPENDERS.sort_values(by = "Total Price", ascending = False).head(10)
 
-plt.title('Top 10 Spenders', fontsize=18, weight='bold')
-plt.xlabel('Customer ID', fontsize=14, weight='bold')
-plt.ylabel('Total Spending', fontsize=14, weight='bold')
-plt.xticks(rotation=45, ha='right', fontsize=12)
-plt.yticks(fontsize=12)
-plt.grid(axis='y', linestyle='--', alpha=0.7)
+    TOP10_SPENDERS 
 
-# Adding data labels
-for x, y in zip(range(len(TOP10_SPENDERS)), TOP10_SPENDERS['Total Price']):
-    plt.text(x, y, f'{y:.2f}', ha='center', va='bottom', fontsize=10, color='black')
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/970870a9-e28f-4a6e-b465-66467e19353b)
 
-plt.show()
+
+# TOP 10 CUSTOMER BY TOTAL SPENDINGS
+
+    plt.figure(figsize=(12, 8))
+    sns.barplot(x="CustomerID", y="Total Price", data=TOP10_SPENDERS, palette='Blues', 
+                order=TOP10_SPENDERS['CustomerID'])
+
+    plt.title('Top 10 Spenders', fontsize=18, weight='bold')
+    plt.xlabel('Customer ID', fontsize=14, weight='bold')
+    plt.ylabel('Total Spending', fontsize=14, weight='bold')
+    plt.xticks(rotation=45, ha='right', fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+* Adding data labels
+
+        for x, y in zip(range(len(TOP10_SPENDERS)), TOP10_SPENDERS['Total Price']):
+            plt.text(x, y, f'{y:.2f}', ha='center', va='bottom', fontsize=10, color='black')
+
+        plt.show()
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/530479c5-7a9e-4341-bcad-8fe57454adc1)
 
 
 # DISTRIBUTION OF TOTAL SPENDINGS
