@@ -179,7 +179,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/0f6622da-ca15-4c53-9ee0-5dd051dc6cab)
 
 
-# Number of Orders per Country
+# TOTAL NUMBER OF ORDERS PER COUNTRY
 
     countries = df["Country"].value_counts()
 
@@ -205,7 +205,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/431c5843-3fc2-4df5-964b-c68fee7ebc67)
 
-* MOST SELLING (TOP) PRODUCT - "WHITE HANGING HEART T-LIGHT HOLDER"
+* Most selling (TOP) product - "WHITE HANGING HEART T-LIGHT HOLDER"
 
 
 # SALES QUANTITY OF TOP PRODUCT BY COUNTRIES
@@ -239,7 +239,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/cdca04c2-9283-4d9e-b304-b0205e8cc237)
 
 
-# The distribution of sales in TOP 10 countries 
+# THE DISTRIBUTION OF SALES IN TOP 10 COUNTRIES
 
     plt.figure(figsize=(18, 6))
     sns.barplot(data= Sales_top10, x= 'Country', y= 'Total Price',palette= 'muted')
@@ -252,7 +252,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/bdf0b68a-1dac-42d1-9bde-578091afc1d1)
 
 
-# The distribution of sales in the top country (UK) per month and year.
+# THE DISTRIBUTION OF SALES IN THE TOP COUNTRY (UK) PER MONTH AND YEAR.
 
     df['Month'] = df['InvoiceDate'].dt.month
 
@@ -273,7 +273,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/14df1886-dd3c-447f-b76e-7d861af7c415)
 
 
-# The distribution of sales in other TOP 10 countries per year/month.
+# THE DISTRIBUTION OF SALES IN OTHER TOP 10 COUNTRIES PER YEAR/MONTH.
 
     TOP10_Other = Sales_top10[~Sales_top10["Country"].str.contains("United Kingdom")]
 
@@ -284,7 +284,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/3fd7831d-5091-4750-903f-152a8598c3ba)
 
 
-# The distribution of sales in other TOP 10 countries per year.
+# THE DISTRIBUTION OF SALES IN OTHER TOP 10 COUNTRIES PER YEAR.
 
     plt.figure(figsize=(18, 6))
     sns.barplot(data= Sales_top10_other, x= 'Country', y= 'Total Price',hue ="Year",palette= 'Paired')
@@ -297,7 +297,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/65902181-cd6e-4150-a2bd-fd2ff82310f3)
 
 
-# The distribution of sales in other TOP 10 countries per month.
+# THE DISTRIBUTION OF SALES IN OTHER TOP 10 COUNTRIES PER MONTH.
 
     plt.figure(figsize=(18, 6))
     sns.barplot(data= Sales_top10_other, x= 'Country', y= 'Total Price',hue ="Month",palette= 'viridis')
@@ -310,7 +310,7 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/c6b41bed-7765-4b0a-a9fe-0593298f961c)
 
 
-# Total monthly sales Trendline
+# TOTAL MONTHLY SALES TRENDLINE.
 
     Sales_per_month = df.groupby("Month", as_index=False)["Total Price"].sum()
 
@@ -389,11 +389,13 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/75ced686-0e19-40bc-a381-83143083a98f)
 
 
-# Create a DataFrame with sorted values
+# Creating a DataFrame with sorted values
 
     TOP10_CUSTOMERS_df = pd.DataFrame({'CustomerID': TOP10_CUSTOMERS.index, 'Count': TOP10_CUSTOMERS.values})
     TOP10_CUSTOMERS_df = TOP10_CUSTOMERS_df.sort_values(by='Count', ascending=False)
-    
+
+# TOP 10 CUSTOMERS BY NUMBER OF ORDERS
+
     plt.figure(figsize=(12, 6))
     sns.barplot(x='CustomerID', y='Count', data=TOP10_CUSTOMERS_df, palette='viridis',
                 order=TOP10_CUSTOMERS_df['CustomerID']) 
@@ -426,8 +428,6 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 ![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/970870a9-e28f-4a6e-b465-66467e19353b)
 
 
-# TOP 10 CUSTOMER BY TOTAL SPENDINGS
-
     plt.figure(figsize=(12, 8))
     sns.barplot(x="CustomerID", y="Total Price", data=TOP10_SPENDERS, palette='Blues', 
                 order=TOP10_SPENDERS['CustomerID'])
@@ -451,112 +451,181 @@ Data Analysis and Data Visualization of Sales and Customers Data.
 
 # DISTRIBUTION OF TOTAL SPENDINGS
 
-customer_spending = df.groupby("CustomerID", as_index=False)["Total Price"].sum()
+    customer_spending = df.groupby("CustomerID", as_index=False)["Total Price"].sum()
+
+    plt.figure(figsize=(12, 8))
+    sns.histplot(data=customer_spending, x='Total Price', bins=np.arange(0,10000,100))
+
+    plt.title('DISTRIBUTION OF TOTAL SPENDINGS', fontsize=14, weight='bold')
+    plt.xlabel('Total Spending', fontsize=11, weight='bold')
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/c77dc8b9-084f-42be-bbb1-7f1a749fee84)
 
 
-plt.figure(figsize=(12, 8))
-sns.histplot(data=customer_spending, x='Total Price', bins=np.arange(0,10000,100))
-
-plt.title('DISTRIBUTION OF TOTAL SPENDINGS', fontsize=14, weight='bold')
-plt.xlabel('Total Spending', fontsize=11, weight='bold')
 # CLASSIFYING CUSTOMERS BASED ON THEIR TOTAL SPENDING
 
-# Defining spending ranges and labels
-spending_bins = [0, 100, 500, 2000, 10000, float('inf')]
-spending_labels = ['Very Low (0-100)', 'Low (100-500)', 'Medium (500-2,000)', 'High (2,000-10,000)', 'Very High (> 10,000)']
+* Defining spending ranges and labels
 
-# Creating a new column 'TotalSpendingCategory' based on the total spending
-customer_spending['TotalSpendingCategory'] = pd.cut(customer_spending['Total Price'], bins=spending_bins, labels=spending_labels, right=False)
+        spending_bins = [0, 100, 500, 2000, 10000, float('inf')]
+        spending_labels = ['Very Low (0-100)', 'Low (100-500)', 'Medium (500-2,000)', 'High (2,000-10,000)', 'Very High (> 10,000)']
+
+* Creating a new column 'TotalSpendingCategory' based on the total spending
+
+        customer_spending['TotalSpendingCategory'] = pd.cut(customer_spending['Total Price'], bins=spending_bins, labels=spending_labels, right=False)
+
+        customer_spending["TotalSpendingCategory"].value_counts(normalize=True)
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/a5fa88a4-b240-4cbc-b064-d8b9a253a3ab)
 
 
-customer_spending["TotalSpendingCategory"].value_counts(normalize=True)
+# CUSTOMER SPENDING DISTRIBUTION
 
+    spending_distribution = customer_spending["TotalSpendingCategory"].value_counts(normalize=True)
 
+    plt.figure(figsize=(8, 8))
+    sns.set_palette("Blues")
 
+    plt.pie(spending_distribution, labels=spending_distribution.index, autopct='%1.1f%%', startangle=180)
+    plt.title('Customer Spending Distribution', fontsize=16, weight='bold')
+    plt.show()
 
-spending_distribution = customer_spending["TotalSpendingCategory"].value_counts(normalize=True)
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/49e8ce9a-68bc-4e79-9104-0f56aa82bfb8)
 
-plt.figure(figsize=(8, 8))
-
-sns.set_palette("Blues")
-
-# PIE CHART
-plt.pie(spending_distribution, labels=spending_distribution.index, autopct='%1.1f%%', startangle=180)
-
-plt.title('Customer Spending Distribution', fontsize=16, weight='bold')
-
-plt.show()
 
 # DISTRIBUTION OF TOTAL ORDERS
 
-customer_orders = df.groupby("CustomerID", as_index=False)["InvoiceNo"].count()
+    customer_orders = df.groupby("CustomerID", as_index=False)["InvoiceNo"].count()
 
+    plt.figure(figsize=(12, 8))
+    sns.histplot(data=customer_orders, x='InvoiceNo', bins=np.arange(0,1000,20))
 
-plt.figure(figsize=(12, 8))
-sns.histplot(data=customer_orders, x='InvoiceNo', bins=np.arange(0,1000,20))
+    plt.title('DISTRIBUTION OF TOTAL ORDERS', fontsize=14, weight='bold')
+    plt.xlabel('Total Orders', fontsize=11, weight='bold')
 
-plt.title('DISTRIBUTION OF TOTAL ORDERS', fontsize=14, weight='bold')
-plt.xlabel('Total Orders', fontsize=11, weight='bold')
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/e64d50c9-8385-4309-bb35-25637bf6a4c3)
+
+    
 # CLASSIFYING CUSTOMERS BASED ON THEIR TOTAL ORDERS
 
-# Defining spending ranges and labels
-spending_bins = [0, 5, 20, 50, 200, float('inf')]
-spending_labels = ['Very Low (0-5)', 'Low (5-20)', 'Medium (20-50)', 'High (50-200)', 'Very High (> 200)']
+* Defining spending ranges and labels
 
-# Creating a new column 'TotalOrderCategory' based on the total spending
-customer_orders['TotalOrdersCategory'] = pd.cut(customer_orders['InvoiceNo'], bins=spending_bins, labels=spending_labels, right=False)
+        spending_bins = [0, 5, 20, 50, 200, float('inf')]
+        spending_labels = ['Very Low (0-5)', 'Low (5-20)', 'Medium (20-50)', 'High (50-200)', 'Very High (> 200)']
+
+* Creating a new column 'TotalOrderCategory' based on the total spending
+  
+        customer_orders['TotalOrdersCategory'] = pd.cut(customer_orders['InvoiceNo'], bins=spending_bins, labels=spending_labels, right=False)
+
+        customer_orders["TotalOrdersCategory"].value_counts(normalize=True)
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/53261639-18a3-4638-bbad-4d3a6aa0b9a6)
 
 
-customer_orders["TotalOrdersCategory"].value_counts(normalize=True)
+# CUSTOMER ORDERS DISTRIBUTION
 
-total_orders_distribution = customer_orders["TotalOrdersCategory"].value_counts(normalize=True)
+    total_orders_distribution = customer_orders["TotalOrdersCategory"].value_counts(normalize=True)
 
-plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(8, 8))
+    plt.pie(total_orders_distribution, labels=total_orders_distribution.index, autopct='%1.1f%%', startangle=90)
+    plt.title('Customer Orders Distribution', fontsize=16, weight='bold')
+   
+    plt.show()
 
-# PIE CHART
-plt.pie(total_orders_distribution, labels=total_orders_distribution.index, autopct='%1.1f%%', startangle=90)
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/e0ef8acc-9e09-42c0-bfe3-9285ca03c65a)
 
-plt.title('Customer Orders Distribution', fontsize=16, weight='bold')
 
-plt.show()
 
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import r2_score
+    from sklearn.metrics import mean_squared_error
+    from sklearn.metrics import mean_absolute_error
+
+    
 # RELATIONSHIP BETWEEN TWO VARIABLES: QUANTITY AND UNIT PRICE
 
 sns.scatterplot(data=df, x='UnitPrice', y='Quantity') 
-# FEATURES - INDEPENDANT VARIABLE "UnitPrice"
 
-X = df['UnitPrice'].values.reshape(-1,1)
-# TARGET - DEPENDANT VARIABLE "Quantity"
 
-y = df['Quantity'].values
-# SPLITTING THE DATA INTO TRAINING SAMPLE (80%) AND TESTING SAMPLE(20%)
+# REGRESSION
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+* FEATURES - INDEPENDANT VARIABLE "UnitPrice"
+
+      X = df['UnitPrice'].values.reshape(-1,1)
+
+* TARGET - DEPENDANT VARIABLE "Quantity"
+
+        y = df['Quantity'].values
+
+* SPLITTING THE DATA INTO TRAINING SAMPLE (80%) AND TESTING SAMPLE(20%)
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+
 # REGRESSION PLOT 
 
-plt.figure(figsize=(12, 10))
-sns.regplot(x=X_train, y=y_train, line_kws={'color': 'blue'}, scatter_kws={'color': 'orange'})
+    plt.figure(figsize=(12, 10))
+    sns.regplot(x=X_train, y=y_train, line_kws={'color': 'blue'}, scatter_kws={'color': 'orange'})
 
-plt.xlabel('UnitPrice')
-plt.ylabel('Quantity')
-plt.show()
+    plt.xlabel('UnitPrice')
+    plt.ylabel('Quantity')
+    plt.show()
 
-# HIGHER UNIT PRICES NEGATIVELY AFFECTS (DECREASES) QUANTITY PURCHASED
-lr = LinearRegression()
-lr.fit(X_train, y_train)
-print ('coefficients : ',lr.coef_) 
-print ('Intercept : ',lr.intercept_) 
-# PREDICTING THE QUANTITY IF THE UNIT PRICE IS 10.
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/51a68eca-6887-4b5d-aa48-1152cc7157e3)
 
-lr.predict(np.array([10]).reshape(1,-1))
-y_train_pred = lr.predict(X_train)
 
-y_test_pred = lr.predict(X_test)  # USING THE TEST PREDICTION FOR CALCULATIONS
-print('Mean absolute error: %.2f ' % mean_absolute_error(y_test, y_test_pred))
-print('Mean sum of squares (MSE): %.2f ' % mean_squared_error(y_test, y_test_pred))
-print('R2-score: %.2f' % r2_score(y_test, y_test_pred) )
+* HIGHER UNIT PRICES NEGATIVELY AFFECTS (DECREASES) QUANTITY PURCHASED
+
+
+# LINEAR REGRESSION
+
+        lr = LinearRegression()
+        lr.fit(X_train, y_train)
+  
+        print ('coefficients : ',lr.coef_) 
+        print ('Intercept : ',lr.intercept_)
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/78c0503c-bf8d-429a-b61b-e82910402659)
+
+
+* PREDICTING THE QUANTITY IF THE UNIT PRICE IS 10.
+
+        lr.predict(np.array([10]).reshape(1,-1))
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/7ab62dc9-1490-4483-83b4-9ea2484ae686)
+
+
+  # MAE, MSE, R2
+  
+    y_train_pred = lr.predict(X_train)
+
+    y_test_pred = lr.predict(X_test)    * USING THE TEST PREDICTION FOR CALCULATIONS
+
+    print('Mean absolute error: %.2f ' % mean_absolute_error(y_test, y_test_pred))
+    print('Mean sum of squares (MSE): %.2f ' % mean_squared_error(y_test, y_test_pred))
+    print('R2-score: %.2f' % r2_score(y_test, y_test_pred) )
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/c6815580-ebc0-4260-934c-71c43f42329a)
+
+
+
+# POWER BI
+
+
+* SALES MAP WITH TRENDLINES OVER TIME
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/137aaa83-fa4a-4a64-b1e9-03c522f070b5)
+
+
+* TOTAL SALES DISTRIBUTION MAP
+
+![image](https://github.com/EmirMire/CRM_Analytics/assets/121452974/3eca9431-6f3b-429e-9482-55c14510a7cb)
+
+
+
+
+
+
+
+
+
